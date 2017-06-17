@@ -13,6 +13,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 このリポジトリは[Hijiyama.R #6](https://atnd.org/events/87953)で発表に使用した資料置き場です．
 
+## 初心者セッション
+WIP.
+
+## 応用セッション
+WIP.
+
+## LTセッション
+
+- [YouTubu on RStudio](intro_tubeplayR.html)
+
 
 ## LICENSE
 
