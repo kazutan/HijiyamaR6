@@ -1,0 +1,300 @@
+---
+title: "R Markdown + Githubでモダンな個人Webサイト構築"
+subtitle: "Hijiyama.R #6"
+author: "kazutan"
+date: 
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [
+      '--from', 'markdown+autolink_bare_uris+tex_math_single_backslash-implicit_figures'
+    ]
+    theme: sky
+    center: true
+    css: for-revealjs.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+# はじめに
+
+## 目指すもの
+
+- rmarkdownで静的なWebサイト構築
+- それをgit & githubで運用
+- github.ioとして公開
+
+Webサーバーも含め，無料でサイトを構築&公開しよう
+
+## 本発表の流れ
+
+1. 全体的なコンセプト
+1. GitHubリポジトリの準備
+1. サイトの中身を作成
+1. GitHubリポジトリへpush
+1. 公開のための設定
+
+## 必要なもの
+
+- gitの知識
+    - 出来る限りコマンドを使わないように説明します
+- githubの知識，アカウント
+    - 出来る限りシンプルに説明します
+- rmarkdownの知識
+    - 最小構成で説明します
+- webの知識
+    - html & cssに触れたことある程度でOKです
+
+# 全体的なコンセプト
+
+## R Markdownで静的サイトを作ろう
+
+- R Markdownを使えばhtmlドキュメントが作れる
+    - Bootstrapが組み込まれている
+        - シンプルで簡単にそれっぽいのが作れる
+- R Markdownには`render_site()`関数も
+    - つまりWebサイトを一気に作ることも想定
+    - 一度作ってしまえば，あとは簡単
+
+## Github Pages利用しよう
+
+- Webサーバを準備する必要
+    - レンタルすると有料
+    - サーバメンテが面倒
+- GitHub Pagesなら3ステップでOK
+    - リポジトリを準備
+    - Fileをアップロード(push)
+    - 公開用にセッティング
+
+## 構築の流れ
+
+1. GitHub上で公開用リポジトリを準備
+1. そのリポジトリからRStudioでProjectを作成
+1. Webサイト用にProjectの設定を変更
+1. yamlファイル，Rmdファイル等を作成
+1. `Build Website`を実行
+1. GitHubへpush
+1. GitHub側で公開向けに設定
+
+## メリット
+
+- **Rがそのまま使える**
+- 統一感のあるデザインが組みやすい
+- **構築から公開まで無料**で可能
+- **Markdown記法**でドキュメントを作れる
+- gitによる**バージョン管理が可能**
+- Pull Requestによる**共同編集**が可能
+- やろうと思えばとことん作り込める  
+などなど
+
+# リポジトリとプロジェクトの準備
+
+## ローカルマシン等の準備
+
+- R/RStudio側の準備
+    - RStudioはv1.0以上を推奨
+    - *rmarkdown*と*knitr*は最新版へ
+    - あとはRmdファイル内で使うパッケージを入れておく
+- git環境を準備
+    - マシンにgitをインストール
+    - gitにユーザー名など基本設定をしておく
+    - sshキーを作成してGitHubにも登録しておく
+    - 詳細は省略
+
+## 新規でリポジトリを準備
+
+1. ブラウザでGitHubにログイン
+1. 新たにリポジトリを作成
+    - 個人サイトなら`(アカウント名).github.io`というリポジトリ名で
+        - これで作ると`https://(アカウト名).github.io/`というurlで作れるため
+    - そうでないなら適当なリポジトリ名で
+        - これで作ると`https://(アカウント名).github.io/(リポジトリ名)`というurlでサイトができます
+
+## SSH用のアドレスをコピー
+
+1. できたGitHubリポジトリの右上の方にある緑の**Clone or download**をクリック
+1. **Clone with SSH**になっているのを確認
+    - おそらく`git@github.com:(アカウント名)/(リポジトリ名).git`となっているはず
+    - もしHTTPSになってたら**Use SSH**をクリックして切り替え
+1. クリップボードアイコンをクリックしてアドレスをコピー
+
+## RStudioでプロジェクト準備
+
+1. RStudioを起動
+1. **New Project...**を選択
+1. **Version Control**を選択
+1. **Git**を選択
+1. **Repository URL:**に，さっきコピーしたのを貼り付ける
+1. ディレクトリの場所を確認し，**Create Project**をクリック
+
+## Build設定
+
+1. メニューの**Tools** - **Project Options...**をクリック
+1. **Build Tools**パネルを編集
+    1. **Project build tools:**を**Website**へ
+    1. **Site directory:**を，プロジェクトのホームディレクトリへ
+1. **OK**をクリック
+1. RStudioを**再起動**
+    - もしくはプロジェクトを一旦閉じてまた開く
+    - 必須ではないけどしておいたほうが無難
+
+# サイトの中身を作成
+
+## 基本的な流れ
+
+- Rmdファイルを準備
+    - `index.Rmd`を作成(トップページ)
+    - その他のページをRmdで準備
+- サイト設定用ファイル(`_site.yml`)を作る
+    - これがポイント
+    - 今回は最低限の部分だけ
+
+詳しくは以下を参照してください:
+
+- [R MarkdownでWebサイト生成しよう](https://kazutan.github.io/RmdSite_tuto/)
+- [R Markdown Websites](http://rmarkdown.rstudio.com/rmarkdown_websites.html)
+
+## Rmdファイルを準備
+
+- いつものRmdとほぼ同様
+- ただし，yamlフロントマターは`title:`のみでOK
+- `index.Rmd`はトップページ用に準備
+- それ以外のRmdのファイル名はお好みで
+    - もしページにまとまりがあるなら，それを意識して命名すると楽
+    - `hoge_fuga.Rmd`, `hoge_piyo.Rmd`みたいに
+    - あるいは`01-hoge.Rmd`, `02-fuga.Rmd`など
+- カテゴリ別にディレクトリに分けるのは非推奨
+    - Buildが面倒になるため
+
+## サイト設定ファイル(`_site.yml`)を準備
+
+[Kazutan.R](https://kazutan.github.io/kazutanR/)の[`_site.yml`](https://github.com/kazutan/kazutanR/blob/master/_site.yml)から一部抜粋:
+
+```yaml
+name: "Kazutan.R"
+navbar:
+  title: "Kazutan.R"
+  left: 
+    - text: "about"
+      href: "about.html"
+output:
+  html_document:
+    css: site_style.css
+output_dir: "docs"
+```
+
+**重要なのは`output_dir: "docs"`**で，GitHubで公開するならこれを入れておくこと!
+
+## その他のファイルの準備
+
+- `.nojikill`というファイル(中身は空っぽ)をホームディレクトリ作っておく(**ほぼ必須**)
+    - これを設置しておかないと微妙なことになるため
+- 必要ならば画像ファイルを準備(任意)
+- README.mdを準備(任意)
+    - なくてもいいけどあったほうが望ましい
+- その他必要な素材を準備(任意)
+    - 使用するcssファイルやjsライブラリなど
+
+## Build Website
+
+1. RStudioの右上のPaneにある**Buils**タブをクリック
+1. **Build Website**をクリック
+    - Buildが実行され，Rmdらがレンダリング
+    - knitでエラーがでると途中でストップ
+        - エラーが出ないように修正して再度Build
+1. うまくいけば`docs`ディレクトリ内に出力
+    - この中身をまるっと公開すればWebサイトができる!
+    - GitHub以外へ公開するなら，これをftpなりでUploadすればOK
+
+# GitHubリポジトリへpush
+
+## Terminalで行う場合
+
+かなり省略してます。
+
+```bash
+$ cd (プロジェクトのホームディレクトリへのパス)
+$ git status
+$ git add (各種ファイル)
+```
+
+- `git status`で状態を確認
+- `git add (ファイルパス)`でstagedにするファイルを指定
+    - もし全てをあげたいなら`git add -A`でもOK
+    - でもあんまりおすすめしない
+
+---
+
+```bash
+$ git commit -m "コミットメッセージ"
+$ git push
+```
+
+- `git commit`でローカルのリポジトリに変更を登録
+    - `git commit -m`で，その場でコミットメッセージを入れれる
+    - もし`-m`が抜けると，コミット編集画面が出る
+        - 本当はそっちの方がいい
+        - でも慣れるまでor簡単な分ならこれでもいいかな
+    - コミットはこまめに行うこと
+- `git push`でリモート(ここではGithub)へ変更を反映
+    - うまくいけば，これでGitHubのリポジトリに反映
+    - remoteの設定はRStudioでプロジェクト作る際に自動的に設定されている
+
+## RStudioのUIで行う場合
+
+1. RStudioの右上のPaneにある**Git**タブをクリック
+1. version管理するファイルに対し，**Staged**のチェックを入れていく
+1. **Commit**ボタンをクリック
+1. ファイルを確認し，**Commit message**を入力
+1. **Push**ボタンをクリック
+
+用語としては，先ほどのTerminalの場合で説明しているので省略します
+
+# 公開のための設定と今後の更新作業
+
+## 公開ディレクトリ(ブランチ)を指定
+
+1. GitHubの該当リポジトリへ
+1. リポジトリ名のすぐ下にあるタブ一覧から**Setting**をクリック
+1. 下へスクロールし**GitHub Pages**へ
+1. **Source**のところを設定
+    1. プルダウンメニューをnoneから**master branch /docs folder**に切り替える
+    1. 横の**Save**ボタンをクリック
+
+## Webサイトの確認
+
+1. `https://(アカウント名).github.io/(リポジトリ名)`にアクセス
+    - リポジトリ名が`(アカウント名).github.io`の場合，  
+    `https://(アカウント名).github.io/`へアクセス
+1. 無事に表示できていたらOK
+    - 404だった場合，少し時間を置いてアクセス
+    - それでも出てこない場合はurlを再確認し，再読み込み
+
+## 更新作業
+
+1. RStudioでRmdなどを編集
+1. **Build Website**
+1. GitHubへpush
+    - `add` - `commit` - `push`の流れ
+    - 一度通っているので，あとは簡単です
+1. urlへアクセスして反映を確認
+
+以上です。お疲れ様でした。
+
+# さいごに
+
+## 留意事項
+
+- gitの基礎はおさえよう
+    - 今回ほぼ省いています
+    - gitの理念と基本的なコードは憶えておいた方がいい
+    - 無理せず，一つずつコマンドを使っていきましょう
+- 文字コードに気をつけよう
+    - 割と引っかかる
+    - OSをクロスするとよく発生
+- 他のRmdサイトを参考にしよう
+    - 特に`_site.yml`
+
+## Enjoy!
