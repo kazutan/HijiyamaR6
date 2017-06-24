@@ -493,7 +493,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </section>
 
 <section><section id="はじめに" class="titleslide slide level1"><h1>はじめに</h1></section><section id="目指すもの" class="slide level2">
-<h2>目指すもの</h2>
+<h1>目指すもの</h1>
 <ul>
 <li>rmarkdownで静的なWebサイト構築</li>
 <li>それをgit &amp; githubで運用</li>
@@ -501,7 +501,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul>
 <p>Webサーバーも含め，無料でサイトを構築&amp;公開しよう</p>
 </section><section id="本発表の流れ" class="slide level2">
-<h2>本発表の流れ</h2>
+<h1>本発表の流れ</h1>
 <ol type="1">
 <li>全体的なコンセプト</li>
 <li>GitHubリポジトリの準備</li>
@@ -510,7 +510,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>公開のための設定</li>
 </ol>
 </section><section id="必要なもの" class="slide level2">
-<h2>必要なもの</h2>
+<h1>必要なもの</h1>
 <ul>
 <li>gitの知識
 <ul>
@@ -531,7 +531,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul>
 </section></section>
 <section><section id="全体的なコンセプト" class="titleslide slide level1"><h1>全体的なコンセプト</h1></section><section id="r-markdownで静的サイトを作ろう" class="slide level2">
-<h2>R Markdownで静的サイトを作ろう</h2>
+<h1>R Markdownで静的サイトを作ろう</h1>
 <ul>
 <li>R Markdownを使えばhtmlドキュメントが作れる
 <ul>
@@ -547,7 +547,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul></li>
 </ul>
 </section><section id="github-pages利用しよう" class="slide level2">
-<h2>Github Pages利用しよう</h2>
+<h1>Github Pages利用しよう</h1>
 <ul>
 <li>Webサーバを準備する必要
 <ul>
@@ -562,7 +562,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul></li>
 </ul>
 </section><section id="構築の流れ" class="slide level2">
-<h2>構築の流れ</h2>
+<h1>構築の流れ</h1>
 <ol type="1">
 <li>GitHub上で公開用リポジトリを準備</li>
 <li>そのリポジトリからRStudioでProjectを作成</li>
@@ -573,7 +573,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>GitHub側で公開向けに設定</li>
 </ol>
 </section><section id="メリット" class="slide level2">
-<h2>メリット</h2>
+<h1>メリット</h1>
 <ul>
 <li><strong>Rがそのまま使える</strong></li>
 <li>統一感のあるデザインが組みやすい</li>
@@ -586,7 +586,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul>
 </section></section>
 <section><section id="リポジトリとプロジェクトの準備" class="titleslide slide level1"><h1>リポジトリとプロジェクトの準備</h1></section><section id="ローカルマシン等の準備" class="slide level2">
-<h2>ローカルマシン等の準備</h2>
+<h1>ローカルマシン等の準備</h1>
 <ul>
 <li>R/RStudio側の準備
 <ul>
@@ -603,7 +603,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul></li>
 </ul>
 </section><section id="新規でリポジトリを準備" class="slide level2">
-<h2>新規でリポジトリを準備</h2>
+<h1>新規でリポジトリを準備</h1>
 <ol type="1">
 <li>ブラウザでGitHubにログイン</li>
 <li>新たにリポジトリを作成
@@ -619,7 +619,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul></li>
 </ol>
 </section><section id="ssh用のアドレスをコピー" class="slide level2">
-<h2>SSH用のアドレスをコピー</h2>
+<h1>SSH用のアドレスをコピー</h1>
 <ol type="1">
 <li>できたGitHubリポジトリの右上の方にある緑の<strong>Clone or download</strong>をクリック</li>
 <li><strong>Clone with SSH</strong>になっているのを確認
@@ -630,7 +630,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>クリップボードアイコンをクリックしてアドレスをコピー</li>
 </ol>
 </section><section id="rstudioでプロジェクト準備" class="slide level2">
-<h2>RStudioでプロジェクト準備</h2>
+<h1>RStudioでプロジェクト準備</h1>
 <ol type="1">
 <li>RStudioを起動</li>
 <li><strong>New Project…</strong>を選択</li>
@@ -640,7 +640,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li>ディレクトリの場所を確認し，<strong>Create Project</strong>をクリック</li>
 </ol>
 </section><section id="build設定" class="slide level2">
-<h2>Build設定</h2>
+<h1>Build設定</h1>
 <ol type="1">
 <li>メニューの<strong>Tools</strong> - <strong>Project Options…</strong>をクリック</li>
 <li><strong>Build Tools</strong>パネルを編集
@@ -657,7 +657,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ol>
 </section></section>
 <section><section id="サイトの中身を作成" class="titleslide slide level1"><h1>サイトの中身を作成</h1></section><section id="基本的な流れ" class="slide level2">
-<h2>基本的な流れ</h2>
+<h1>基本的な流れ</h1>
 <ul>
 <li>Rmdファイルを準備
 <ul>
@@ -676,7 +676,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li><a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">R Markdown Websites</a></li>
 </ul>
 </section><section id="rmdファイルを準備" class="slide level2">
-<h2>Rmdファイルを準備</h2>
+<h1>Rmdファイルを準備</h1>
 <ul>
 <li>いつものRmdとほぼ同様</li>
 <li>ただし，yamlフロントマターは<code>title:</code>のみでOK</li>
@@ -693,21 +693,21 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul></li>
 </ul>
 </section><section id="サイト設定ファイル_site.ymlを準備" class="slide level2">
-<h2>サイト設定ファイル(<code>_site.yml</code>)を準備</h2>
+<h1>サイト設定ファイル(<code>_site.yml</code>)を準備</h1>
 <p><a href="https://kazutan.github.io/kazutanR/">Kazutan.R</a>の<a href="https://github.com/kazutan/kazutanR/blob/master/_site.yml"><code>_site.yml</code></a>から一部抜粋:</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">name:</span><span class="at"> </span><span class="st">&quot;Kazutan.R&quot;</span>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">name:</span> <span class="st">&quot;Kazutan.R&quot;</span>
 <span class="fu">navbar:</span>
-  <span class="fu">title:</span><span class="at"> </span><span class="st">&quot;Kazutan.R&quot;</span>
-  <span class="fu">left:</span><span class="at"> </span>
-    <span class="kw">-</span> <span class="fu">text:</span><span class="at"> </span><span class="st">&quot;about&quot;</span>
-      <span class="fu">href:</span><span class="at"> </span><span class="st">&quot;about.html&quot;</span>
+  <span class="fu">title:</span> <span class="st">&quot;Kazutan.R&quot;</span>
+  <span class="fu">left:</span> 
+    <span class="kw">-</span> <span class="fu">text:</span> <span class="st">&quot;about&quot;</span>
+      <span class="fu">href:</span> <span class="st">&quot;about.html&quot;</span>
 <span class="fu">output:</span>
   <span class="fu">html_document:</span>
-    <span class="fu">css:</span><span class="at"> site_style.css</span>
-<span class="fu">output_dir:</span><span class="at"> </span><span class="st">&quot;docs&quot;</span></code></pre></div>
+    <span class="fu">css:</span> site_style.css
+<span class="fu">output_dir:</span> <span class="st">&quot;docs&quot;</span></code></pre></div>
 <p><strong>重要なのは<code>output_dir: &quot;docs&quot;</code></strong>で，GitHubで公開するならこれを入れておくこと!</p>
 </section><section id="その他のファイルの準備" class="slide level2">
-<h2>その他のファイルの準備</h2>
+<h1>その他のファイルの準備</h1>
 <ul>
 <li><code>.nojikill</code>というファイル(中身は空っぽ)をホームディレクトリ作っておく(<strong>ほぼ必須</strong>)
 <ul>
@@ -724,7 +724,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul></li>
 </ul>
 </section><section id="build-website" class="slide level2">
-<h2>Build Website</h2>
+<h1>Build Website</h1>
 <ol type="1">
 <li>RStudioの右上のPaneにある<strong>Buils</strong>タブをクリック</li>
 <li><strong>Build Website</strong>をクリック
@@ -743,11 +743,11 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ol>
 </section></section>
 <section><section id="githubリポジトリへpush" class="titleslide slide level1"><h1>GitHubリポジトリへpush</h1></section><section id="terminalで行う場合" class="slide level2">
-<h2>Terminalで行う場合</h2>
+<h1>Terminalで行う場合</h1>
 <p>かなり省略してます。</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="bu">cd</span> (プロジェクトのホームディレクトリへのパス)
-$ <span class="fu">git</span> status
-$ <span class="fu">git</span> add (各種ファイル)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> (プロジェクトのホームディレクトリへのパス)
+$ <span class="kw">git</span> status
+$ <span class="kw">git</span> add (各種ファイル)</code></pre></div>
 <ul>
 <li><code>git status</code>で状態を確認</li>
 <li><code>git add (ファイルパス)</code>でstagedにするファイルを指定
@@ -758,8 +758,8 @@ $ <span class="fu">git</span> add (各種ファイル)</code></pre></div>
 </ul>
 </section><section class="slide level2">
 
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">git</span> commit -m <span class="st">&quot;コミットメッセージ&quot;</span>
-$ <span class="fu">git</span> push</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> commit -m <span class="st">&quot;コミットメッセージ&quot;</span>
+$ <span class="kw">git</span> push</code></pre></div>
 <ul>
 <li><code>git commit</code>でローカルのリポジトリに変更を登録
 <ul>
@@ -778,7 +778,7 @@ $ <span class="fu">git</span> push</code></pre></div>
 </ul></li>
 </ul>
 </section><section id="rstudioのuiで行う場合" class="slide level2">
-<h2>RStudioのUIで行う場合</h2>
+<h1>RStudioのUIで行う場合</h1>
 <ol type="1">
 <li>RStudioの右上のPaneにある<strong>Git</strong>タブをクリック</li>
 <li>version管理するファイルに対し，<strong>Staged</strong>のチェックを入れていく</li>
@@ -789,7 +789,7 @@ $ <span class="fu">git</span> push</code></pre></div>
 <p>用語としては，先ほどのTerminalの場合で説明しているので省略します</p>
 </section></section>
 <section><section id="公開のための設定と今後の更新作業" class="titleslide slide level1"><h1>公開のための設定と今後の更新作業</h1></section><section id="公開ディレクトリブランチを指定" class="slide level2">
-<h2>公開ディレクトリ(ブランチ)を指定</h2>
+<h1>公開ディレクトリ(ブランチ)を指定</h1>
 <ol type="1">
 <li>GitHubの該当リポジトリへ</li>
 <li>リポジトリ名のすぐ下にあるタブ一覧から<strong>Setting</strong>をクリック</li>
@@ -801,7 +801,7 @@ $ <span class="fu">git</span> push</code></pre></div>
 </ol></li>
 </ol>
 </section><section id="webサイトの確認" class="slide level2">
-<h2>Webサイトの確認</h2>
+<h1>Webサイトの確認</h1>
 <ol type="1">
 <li><code>https://(アカウント名).github.io/(リポジトリ名)</code>にアクセス
 <ul>
@@ -815,7 +815,7 @@ $ <span class="fu">git</span> push</code></pre></div>
 </ul></li>
 </ol>
 </section><section id="更新作業" class="slide level2">
-<h2>更新作業</h2>
+<h1>更新作業</h1>
 <ol type="1">
 <li>RStudioでRmdなどを編集</li>
 <li><strong>Build Website</strong></li>
@@ -829,7 +829,7 @@ $ <span class="fu">git</span> push</code></pre></div>
 <p>以上です。お疲れ様でした。</p>
 </section></section>
 <section><section id="さいごに" class="titleslide slide level1"><h1>さいごに</h1></section><section id="留意事項" class="slide level2">
-<h2>留意事項</h2>
+<h1>留意事項</h1>
 <ul>
 <li>gitの基礎はおさえよう
 <ul>
@@ -848,7 +848,7 @@ $ <span class="fu">git</span> push</code></pre></div>
 </ul></li>
 </ul>
 </section><section id="enjoy" class="slide level2">
-<h2>Enjoy!</h2>
+<h1>Enjoy!</h1>
 </section></section>
     </div>
   </div>

@@ -1,0 +1,108 @@
+---
+title: "fullpagejsというパッケージを作った"
+output: 
+  fullpagejs::fullpagejs_slide:
+    css: for_fullpagejs.css
+---
+
+# 経緯
+
+- revealjsに飽きてきた
+    - revealjsは非常に便利で優秀
+    - 今までのストックがあるから(個人的に)楽
+    - でも**ワンパターン化**してきた
+- 他にもhtmlスライドは存在する
+    - [fullPage.js](https://github.com/alvarotrigo/fullPage.js)というのがあるらしい
+    - でも残念ながらRmdで作れるパッケージがない
+- ぼちぼち自作R Markdownのパッケージを作りたい
+    - rmarkdownの内部を勉強したかった
+
+# fullpagejsパッケージ
+
+アルファ版ですが作りました．
+
+## install
+
+```{r, eval=FALSE}
+devtools::install_github("kazutan/fullpagejs")
+```
+
+## 特徴
+
+- jQueryとそのプラグインであるfullPage.jsで実装
+- デフォルトで**書式設定がほぼなし**
+- fullPage.jsのオプション機能もほぼ使える
+
+# {-}
+
+## スライド区切り{.slide}
+
+`h1`の要素で区切りが入ります
+
+```
+# 1枚目スライド見出し
+
+(1枚目のスライド内容)
+
+# 2枚目スライド見出し
+
+(2枚目のスライド内容)
+```
+
+## 横方向へのスライド{.slide}
+
+以下のようにやります
+
+```
+# {-}
+
+## 一枚目 {.slide}
+
+(一枚目の内容)
+
+## 二枚目 {.slide}
+
+(二枚目の内容)
+```
+
+この場合，第2レベルの見出しには必ず{.slide}を行末につけてください．
+
+## fullPage.jsのオプション指定 {.slide}
+
+以下のようにやります
+
+```
+output: 
+  fullpagejs::fullpagejs_slide:
+    fullpagejs_options: "verticalCentered: true"
+```
+
+- コンマ区切りでオプション項目を指定してください
+- オプションの内容は[本家のREADME](https://github.com/alvarotrigo/fullPage.js)を確認してください
+
+## その他{.slide}
+
+- html_documentで起こしてます
+    - 通常のRmdを使う感覚でほぼすべていけます
+- RStudioのViewerに対応
+- self_containedに対応
+- jQueryとjQueryUIを読み込んでます
+    - JavaScriptでいろいろできます
+
+# Todo
+
+## ドキュメント整備
+
+まだ全く書いてないです．ごめんなさい
+
+## メニューバー実装
+
+手が回ってないです．そのうち実装します
+
+## テーマ機能
+
+さすがに一からcss書いてくのは結構しんどい...ので簡単なのは準備したい
+
+# Enjoy!
+
+

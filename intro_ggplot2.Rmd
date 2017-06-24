@@ -1,0 +1,297 @@
+---
+title: "ggplotのオブジェクトから眺めてみる"
+subtitle: "Hijiyama.R #6"
+author: "kazutan"
+date: 
+output:
+  html_document:
+    md_extensions: -ascii_identifiers
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+## 対象者と前提知識
+
+- Rには触れたことがある
+    - データの読み込みはできる
+    - 文字列型，factor型，数値型は(なんとなく)わかる
+    - データフレームとベクトルは(多少)操作・加工できる
+- ggplot2でのplotに全く慣れていない
+    - でも使ってみたい
+    - でもすぐエラーにぶつかる
+- ggplot2を雰囲気で使っている人
+
+## ggplot2とは
+
+### A layered grammar of graphics
+
+"Grammar of graphics"の思想をレイヤー化してR上で実装したパッケージです。詳しくはHadley Wickhamの[Academic portfolio](http://vita.had.co.nz/)にある論文を参照してください。このパッケージの根底にある原初の思想が書かれいるので，時間があるときに読むのをおすすめします。
+
+### ポイント
+
+よく「ggplot2はきれいだ」とか言われますが，そこは本質的な部分ではないと(個人的には)思っています。大事なのは，「グラフィックスに関する記述が整然としている」点です。なのでその特徴をつかめば，(語彙的な要素を調べれば)広く応用できることになります。
+
+## ggplotオブジェクトの構造
+
+### 全体構成
+
+大雑把に書くと，以下のような感じです:
+
+- Defaults
+    - Data
+    - Mapping
+- Layers
+    - Data
+    - Mapping
+    - Geom
+    - Stat
+    - Position
+- Scales
+- Coorddinates
+- Facet
+- Theme
+- Labels
+
+ポイントは**Defaults**です。ggplotオブジェクトはデフォルトとなるDataとMappingを用意します。これを実際に確認してみます:
+
+```{r}
+library(ggplot2)
+g_null <- ggplot()
+class(g_null)
+```
+
+`ggplot()`はggplotオブジェクトを生成する関数です。引数を一切指定しない場合は**中身が何もない空っぽ**のggplotオブジェクトを返します。ちなみにこれを出力してみるとこうなります:
+
+```{r}
+g_null
+```
+
+まさに空っぽの出力がでてきますね．ではこの中に含まれる要素を確認します:
+
+```{r}
+names(g_null)
+```
+
+このうち，`data`と`mapping`に格納されているのがデフォルトのものです。ではデフォルト設定を与えたものを作ってみます:
+
+```{r}
+g_def_data <- ggplot(data = iris)
+names(g_def_data)
+```
+
+第一階層には変化がありません。ではそれぞれの`data`の内容を確認してみます:
+
+```{r}
+g_null$data %>% str()
+g_def_data$data %>% str()
+```
+
+このように，`ggplot()`内で指定したものは一番上の階層で保持されます。**ggplotオブジェクトは、デフォルトで指定されたデータを保持します**。ではこれをplotとして出力してみると、以下のようになります:
+
+
+```{r}
+g_def_data
+```
+
+さっきと全く変化がありません。これは、**データはあくまでデータであってグラフィックスとして表出する要素は一切ない**ためです。これは考えてみれば当たり前の話で、縦軸とか指定してないのにどうやってやればいいんだよって話ですんで。
+
+では、今度はmappingをデフォルトに与えてみます:
+
+```{r}
+g_def_mapping <- ggplot(mapping = aes(x = Sepal.Length, y = Sepal.Width))
+g_null$mapping %>% str()
+g_def_mapping$mapping %>% str()
+```
+
+`mapping`は審美的要素を設定します。グラフにはいくつか必要な要素があり、例えばx軸に添える変数だったりy軸に添える変数だったり、あるいは凡例に渡すような項目であったり…mappingはデータと出力先との対応を指示・決定する要素となります。
+
+これを描写すると「'Sepal.Length'がないから描けないよ」とエラーがでて描写されません。ということでdataとmappingの両方をデフォルトに与えます:
+
+```{r}
+g_def <- ggplot(iris, aes(Sepal.Length, Sepal.Width))
+```
+
+これでやっとggplotでよくみる形となりました。そしてこれを描写するとこうなります:
+
+```{r}
+g_def
+```
+
+このように，Defaultへdataとmappingをセットすることにより，ベースとなるものを構築できるようになります。
+
+### Layerと継承
+
+#### Layerとは
+
+ではこれからデータをプロットしていきます。データをプロットするには**Layer**を作成して上から重ねます。ということで，早速レイヤーを作成します:
+
+```{r}
+lay_iris_point <- layer(data = iris, mapping = aes(x = Sepal.Length, y = Sepal.Width),
+                      geom = "point", stat = "identity", position = "identity")
+```
+
+ggplotのlayerは上述したように5つの構成要素を保持します:
+
+data
+
+: そのlayerで取り扱うデータ。
+
+mapping
+
+: データをどのようにマッピングするかを指定。
+
+geom
+
+: geometry要素。幾何学的にどう描くかを指定。
+
+stat
+
+: データ処理要素。データをどう処理して取り扱うかを指定。
+
+position
+
+: 配置・位置づけ要素。データ系列の相対的な配置・位置づけを指定。
+
+これらは全てグラフィック要素として必須なものです。なのでlayerにはこの5つ全てを指定する必要があります。具体的に作られたlayerの内容は以下のとおりです:
+
+```{r}
+lay_iris_point
+lay_iris_point %>% str()
+```
+
+
+ではこれをggplotオブジェクトに重ねていきます:
+
+```{r}
+g_null_lay_iris_point <- g_null + lay_iris_point
+g_null_lay_iris_point
+```
+
+これでggplotで描写することができました。これはg_nullに重ねています。つまり**layerには描画するための情報・構成要素が存在する**ということです。それではこのオブジェクトの内部を確認します:
+
+```{r}
+names(g_null_lay_iris_point)
+```
+
+第一階層のラインナップには変更ありません。dataとmappingを確認してみます:
+
+```{r}
+g_null_lay_iris_point$data %>% str()
+g_null_lay_iris_point$mapping %>% str()
+```
+
+入ってきていません。つまりDefaultsはデフォルトなのでそのまま維持されています。ではどこに入っているかというとlayersです:
+
+```{r}
+g_null_lay_iris_point$layers
+g_null_lay_iris_point$layers %>% str()
+```
+
+このように，ggplotオブジェクトに`+`でlayerオブジェクトを重ねると，それがまるっとlayersにリストとして格納されるようになります。ではさらにもう一枚layerを作って重ねてみましょう。まずはlayerを作成します:
+
+```{r}
+lay_iris_line <- layer(data = iris, mapping = aes(x = Sepal.Length, y = Sepal.Width),
+                      geom = "line", stat = "identity", position = "identity")
+```
+
+これを空っぽのggplotに重ねてみましょう:
+
+```{r}
+g_null_lay_iris_line <- g_null + lay_iris_line
+g_null_lay_iris_line
+```
+
+では2つのlayerを重ねます:
+
+```{r}
+g_null_lay_iris_point_line <- g_null + lay_iris_point + lay_iris_line
+g_null_lay_iris_point_line
+```
+
+このように2つのレイヤーが重なって描写されました。では内部を見てみましょう:
+
+```{r}
+g_null_lay_iris_point_line$layers
+```
+
+このように，listとしてそれぞれが格納されています。これがよく言われているggplotのlayerです。
+
+#### `geom_*`と`stat_*`，そして継承
+
+しかしながら，ggplot2を使って描写する際には`layer()`を使うことはまずなく，`geom_*`あるいは`stat_*`を利用しているかと思います。これらは何なのでしょう。例として`geom_point()`を検証します。
+
+`geom_point()`のUsageは以下のとおりです:
+
+```
+geom_point(mapping = NULL, data = NULL, stat = "identity",
+  position = "identity", ..., na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE)
+```
+
+これを見ると，layerの5要素のうち4つがあります。実際に何も指定せずに関数を実行してみて内部を確認します:
+
+```{r}
+geom_point_null <- geom_point()
+geom_point_null
+geom_point_null %>% str()
+```
+
+このように，layerオブジェクトが出来上がっています。すわなち`geom_*`や`stat_*`はレイヤーを作成する関数です。`geom_*`は各幾何学的なタイプごとにいい感じのインスタンスを引き出してくれるのです。では，`geom_point()`を使って描画します:
+
+```{r}
+g_gpoint_null <- g_null + geom_point_null
+g_gpoint_null
+```
+
+なんと何も表示されません。でもこれは当然で，今回は空っぽのggplotに空っぽの`geom_point()`を与えているからです。では，dataなどをちゃんと与えたgeom_pointを準備して描画してみます:
+
+```{r}
+geom_point_iris <- geom_point(data = iris, mapping = aes(x = Sepal.Length, y = Sepal.Width),
+                              stat = "identity", position = "identity")
+geom_point_iris
+g_gpoint_iris <- g_null + geom_point_iris
+g_gpoint_iris
+```
+
+これで，一般的に使われるggplot2での描画となりますね。では，以下のコードと出力を見てください:
+
+```{r}
+g_def_gpoint_null <- g_def + geom_point_null
+g_def_gpoint_null
+```
+
+さて，ここで思い出してほしいのは，**重ねているlayer`geom_point_null`は中身空っぽ**なのです。でもこのようにちゃんとlayerとして機能しています。ではこのggplotオブジェクトの中身を確認してみましょう:
+
+```{r}
+names(g_def_gpoint_null)
+g_def_gpoint_null$layers
+```
+
+やはりlayerオブジェクト内は空っぽです。ではどこからdataやmappingがきているかと言うと，**Defaults**です。ggplotオブジェクトは，layerに必要なdataやmappingが存在しない場合，Defaultsから**継承(inherit)**してきます
+
+よって，「なぜ空っぽの`geom_point()`がlayerとして機能するか」は，
+
+- data, mappingはDefaultsから継承
+- geomは関数名として指定している
+- statやpositionは引数のデフォルトで指定してある
+- その他描画に必要なパラメータはテンプレとなるようなところから引き出している
+
+ためです。なお具体的には`ggplot2:::GeomPoint`から持ってきています。
+
+なお`stat_*`は，この話でgeomとstatが入れ替わっただけとなります。
+
+### その他の要素
+
+省略します。でもここまでの内容が理解できればそう難しくない話です。
+
+## 具体的な描画方法
+
+すでに素晴らしい資料がWebにたくさん公開されていますので，そちらを参照してください。以下にまとめがあります:
+
+[ggplot2に関する資料まとめ - Qiita](http://qiita.com/kazutan/items/c42031ec54be283efd4f)
+
+**Enjoy!**

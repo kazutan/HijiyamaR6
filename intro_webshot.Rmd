@@ -1,0 +1,312 @@
+---
+title: "webshotパッケージで<br />Webをキャプチャ"
+subtitle: "Tokyo.R #62, Hijiyama.R #6"
+author: "kazutan"
+date: 
+output:
+  revealjs::revealjs_presentation:
+    pandoc_args: [
+      '--from', 'markdown+autolink_bare_uris+tex_math_single_backslash-implicit_figures'
+    ]
+    center: true
+    theme: sky
+    css: for-revealjs.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+
+```
+
+```{css, include = FALSE}
+dt {
+  clear: left;
+  float: left;
+  width: 15%;
+  font-weight: bold;
+  text-align: right;
+  padding: 3px 15px 3px 0;
+}
+dd {
+  margin: 0 0 0 20%;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+img {
+  border: 1px solid #003366;
+  margin-left: 30px;
+}
+```
+
+## 自己紹介
+
+<div class="column1">
+- 比治山大学短期大学部
+- @kazutan (Twitter, GitHub, Qiita)
+- http://kz-md.net/
+- http://blog.kz-md.net/
+</div>
+<div class="column2">
+![icon](https://kazutan.github.io/RUserMeeting2016/pics/user.png)
+</div>
+
+## webshotパッケージとは
+
+- RでWebページのスクリーンショットを撮影
+    - [PhantomJS](http://phantomjs.org/)というアプリケーションを利用
+- 公式ドキュメントがわかりやすい
+    - [GitHubサイト](https://github.com/wch/webshot/)
+    - [CRAN上のvignette](https://cran.r-project.org/web/packages/webshot/vignettes/intro.html)
+- どこで使うの?
+    - 最近のR事情を考えるとわりと需要あり
+    - 今回はvignetteを中心に紹介
+
+## 準備
+
+webshotのインストール:
+
+```{r, eval=FALSE}
+# CRANから
+install.packages("webshot")
+# GithHub版
+devtools::install_github("wch/webshot")
+```
+
+- **使用するマシンにPhantomJSが使える必要あり**
+    - [PhantomJS公式サイト](http://phantomjs.org/)からDL
+    - インストールして`PATH`を通しておく
+- 面倒だったら以下のコードを実行:
+
+```{r, eval=FALSE}
+webshot::install_phantomjs()
+```
+
+## hello, webshot
+
+```{r}
+library(webshot)
+url <- "https://kazutan.github.io/kazutanR"
+webshot(url, file = "pics/webshot_demo_01.png", delay = 0.5)
+```
+
+<div class = "column1">
+- まずは記念撮影
+- webshot関数にurlを引き渡せばOK:
+</div>
+<div class = "column2">
+```{r, echo=FALSE, eval=TRUE}
+library(webshot)
+url <- "https://kazutan.github.io/kazutanR"
+webshot(url, file = "pics/webshot_demo_01.png", delay = 0.5)
+```
+</div>
+
+## `webshot()`関数について
+
+### Usage:
+
+```
+webshot(url = NULL, file = "webshot.png", vwidth = 992, vheight = 744,
+  cliprect = NULL, selector = NULL, expand = NULL, delay = 0.2,
+  zoom = 1, eval = NULL)
+```
+
+### Arguments:
+
+- 以前[Kazutan.R](https://kazutan.github.io/kazutanR/)にまとめたので，そちらを参照
+- https://kazutan.github.io/kazutanR/webshot_demo.html
+
+## webshotを使ってみる
+
+### `cliprect`を利用
+
+<div class = "column1">
+`cliprect = "viewport"`と指定すると，`vwidth`と`vheight`で指定したウィンドウサイズでスクリーンショットを撮影します:
+
+```{r}
+url2 <- "http://www.kyoritsu-pub.co.jp/bookdetail/9784320113169"
+webshot(url2, file = "pics/webshot_demo_02.png", 
+        cliprect = "viewport",
+        vwidth = 800,
+        vheight = 600)
+```
+
+</div>
+<div class = "column2">
+```{r, eval=TRUE, echo=FALSE}
+url2 <- "http://www.kyoritsu-pub.co.jp/bookdetail/9784320113169"
+webshot(url2, file = "pics/webshot_demo_02.png", 
+        cliprect = "viewport",
+        vwidth = 800,
+        vheight = 600)
+```
+</div>
+
+---
+
+<div class = "column1">
+また，`cliprect`を具体的な値で指定も可能:
+
+```{r, out.height="150", out.width="300"}
+webshot(url2, file = "pics/webshot_demo_03.png", 
+        cliprect = c(200, 100, 300, 150))
+```
+</div>
+<div class = "column2">
+```{r, out.height="150", out.width="300", eval=TRUE, echo=FALSE}
+webshot(url2, file = "pics/webshot_demo_03.png", 
+        cliprect = c(200, 100, 300, 150))
+```
+</div>
+
+---
+
+### `selector`を利用
+
+<div class = "column1">
+セレクタを指定してみます:
+
+```{r}
+webshot(url2, file = "pics/webshot_demo_04.png", 
+        selector = "article#bookDetailMain")
+```
+</div>
+<div class = "column2">
+```{r, eval=TRUE, echo=FALSE}
+webshot(url2, file = "pics/webshot_demo_04.png", 
+        selector = "article#bookDetailMain")
+```
+</div>
+
+## その他の関数について
+
+- `resize()`関数
+    - 画像をリサイズ
+    - これを使用するためには**GraphicsMagick**もしくは**ImageMagick**が必要
+    - 詳しくは関数のヘルプ`?resize`を参照
+- `shrink()`関数
+    - PNG画像のファイルサイズを縮小する関数
+    - これを使用するためには**optipng**が必要
+    - 詳しくは関数のヘルプ`?shrink`を参照
+
+## 応用例
+
+### htmlwidgetsオブジェクトの画像化
+
+<div class = "column1">
+
+```{r}
+library(dplyr)
+library(leaflet)
+library(htmlwidgets)
+
+m <- leaflet() %>% addTiles() %>% 
+  addPopups(135, 35, "Popup!")
+
+saveWidget(m, file = "leaflet2png.html")
+webshot("leaflet2png.html", 
+        file = "pics/webshot_demo_05.png", 
+        delay = 2)
+```
+
+</div>
+
+<div class = "column2">
+
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(leaflet)
+library(htmlwidgets)
+
+m <- leaflet() %>% addTiles() %>% 
+  addPopups(135, 35, "Popup!")
+
+saveWidget(m, file = "leaflet2png.html")
+webshot("leaflet2png.html", 
+        file = "pics/webshot_demo_05.png", 
+        delay = 2)
+```
+</div>
+
+```{r, eval=TRUE, echo=FALSE, include=FALSE}
+file.remove("leaflet2png.html")
+```
+
+---
+
+### R MarkdownでWebページキャプチャをhtmlドキュメントに埋め込む
+
+*htmltools*を応用して*revealjs*用にサムネイル作成:
+
+```{r}
+library(htmltools)
+thumbnail <- function(title, img, href, caption = TRUE) {
+  tags$div(class = "column1",
+      tags$a(class = "thumbnail", title = title, href = href,
+        tags$img(src = img),
+        tags$div(class = ifelse(caption, "caption", ""),
+          ifelse(caption, title, "")
+        )
+      )
+  )
+}
+```
+
+```{r}
+title <- c("原典", "日本語版")
+urls <- c("https://sites.google.com/site/doingbayesiandataanalysis/",
+          "http://www.kyoritsu-pub.co.jp/bookdetail/9784320113169")
+imgs <- webshot(urls, file = "pics/thumb.png", cliprect = "viewport", delay = 1)
+
+thumbs <- mapply(thumbnail, title = title, img = imgs, href = urls,
+       SIMPLIFY = FALSE, USE.NAMES = FALSE)
+tags$div(class = "row", thumbs)
+```
+
+---
+
+実行するとこのような感じになります:
+
+```{r, eval=TRUE, echo=FALSE}
+library(htmltools)
+thumbnail <- function(title, img, href, caption = TRUE) {
+  tags$div(class = "column1",
+      tags$a(class = "thumbnail", title = title, href = href,
+        tags$img(src = img),
+        tags$div(class = ifelse(caption, "caption", ""),
+          ifelse(caption, title, "")
+        )
+      )
+  )
+}
+
+title <- c("原典", "日本語版")
+urls <- c("https://sites.google.com/site/doingbayesiandataanalysis/",
+          "http://www.kyoritsu-pub.co.jp/bookdetail/9784320113169")
+imgs <- webshot(urls, file = "pics/thumb.png", cliprect = "viewport", delay = 1)
+
+thumbs <- mapply(thumbnail, title = title, img = imgs, href = urls,
+       SIMPLIFY = FALSE, USE.NAMES = FALSE)
+tags$div(class = "row", thumbs)
+```
+
+(cssは独自で調整済みです)
+
+## さいごに
+
+以下の情報を参照してください。
+
+- [GitHubサイト](https://github.com/wch/webshot/)
+    - READMEに基本的な使い方が書いてあります
+- [CRAN上のvignette](https://cran.r-project.org/web/packages/webshot/vignettes/intro.html)
+    - サンプルが豊富にあります
+- [Webshotパッケージ - Kazutan.R](https://kazutan.github.io/kazutanR/webshot_demo.html)
+    - 今回の内容をより詳しく説明しています
+
+## Enjoy!
+
+```{r, eval=TRUE, echo=FALSE}
+webshot(url2, file = "pics/webshot_demo_06.png", cliprect = c(200, 200, 650, 400), zoom = 2)
+```
+
+http://www.kyoritsu-pub.co.jp/bookdetail/9784320113169
